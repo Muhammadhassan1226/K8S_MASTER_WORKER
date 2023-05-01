@@ -10,3 +10,12 @@ apt update
 apt install -y apt-transport-https ca-certificates curl 
 apt install -y kubelet kubeadm kubelet docker.io  
 
+mkdir /etc/containerd
+containerd config default > /etc/containerd/config.toml
+sudo sed -i 's/            SystemdCgroup = false/            SystemdCgroup = true/' /etc/containerd/config.toml
+
+systemctl restart containerd.service
+systemctl restart kubelet.service
+systemctl start docker.service
+systemctl enable kubelet.service
+systemctl enable docker.service
